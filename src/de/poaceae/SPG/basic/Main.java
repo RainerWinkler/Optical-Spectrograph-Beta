@@ -5,6 +5,7 @@
  * @version 0.1
  * @author Rainer Winkler
  * Nov available on Github https://github.com/RainerWinkler/SpectrographBetaClient
+ * 
  */
 
 package de.poaceae.SPG.basic;
