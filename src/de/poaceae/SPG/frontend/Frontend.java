@@ -46,12 +46,15 @@ public class Frontend {
 	private JPanel jContentPane = null;
 	private JMenuBar jJMenuBar = null;
 	private JMenu File = null;
+	private JMenu menuDisplay = null;
 	private JMenuItem New = null;
 
 	private ButtonGroup measureButtonGroup = new ButtonGroup();  //  @jve:decl-index=0:
 	private ButtonGroup displayButtonGroup = new ButtonGroup();  //  @jve:decl-index=0:
 
 	private JMenuItem ListByteCollector = null;
+	private JMenuItem DisplayWavelength = null;
+	private JMenuItem DisplayAllPixel = null;
 	
 	private FrontendHelper frontendHelper = null;  //  @jve:decl-index=0:
 
@@ -225,6 +228,7 @@ public class Frontend {
 		if (jJMenuBar == null) {
 			jJMenuBar = new JMenuBar();
 			jJMenuBar.add(getFile());
+			jJMenuBar.add(getmenuDisplay());
 		}
 		return jJMenuBar;
 	}
@@ -242,6 +246,16 @@ public class Frontend {
 			File.add(getListByteCollector());
 		}
 		return File;
+	}
+	
+	private JMenu getmenuDisplay() {
+		if (menuDisplay == null) {
+			menuDisplay = new JMenu();
+			menuDisplay.setText("Display");
+			menuDisplay.add(getDisplayWavelength());
+			menuDisplay.add(getDisplayAllPixel());
+		}
+		return menuDisplay;
 	}
 
 	/**
@@ -291,6 +305,32 @@ public class Frontend {
 		}
 		return ListByteCollector;
 	}
+	
+	private JMenuItem getDisplayWavelength() {
+		if (DisplayWavelength == null) {
+			DisplayWavelength = new JMenuItem();
+			DisplayWavelength.setText("Display by Wavelength");
+			DisplayWavelength.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+                  frontendHelper.displayWaveLength();
+				}
+			});
+		}
+		return DisplayWavelength;
+	}	
+	
+	private JMenuItem getDisplayAllPixel() {
+		if (DisplayAllPixel == null) {
+			DisplayAllPixel = new JMenuItem();
+			DisplayAllPixel.setText("Display All Pixel of CCD");
+			DisplayAllPixel.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+                  frontendHelper.displayAllPixel();
+				}
+			});
+		}
+		return DisplayAllPixel;
+	}		
 
 	/**
 	 * This method initializes jPanelToDraw	
@@ -313,7 +353,7 @@ public class Frontend {
 	private JButton getGetNewData() {
 		if (GetNewData == null) {
 			GetNewData = new JButton();
-			GetNewData.setText("Hole neue Daten");
+			GetNewData.setText("Get New Data (Click me once)");
 			GetNewData.setHorizontalAlignment(SwingConstants.LEFT);
 			GetNewData.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
