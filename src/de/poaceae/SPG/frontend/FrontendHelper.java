@@ -7,15 +7,25 @@ public class FrontendHelper {
 	
 	final private int lambdaOffset = 200;
 	final private int pixelOffset = 500;
+	final private int displayWaveLength = 1; // 1 - Scale for correct wavelength
+	final private int displayAllPxel = 2; // 2 - Display all pixel
 	
-	private int diagramtype = 2; // 1 - auf konstante Wellenlänge skalieren
-	                             // 2 - Alles anzeigen
+	private int diagramtype = displayWaveLength;              
 	
 	private Interface2MeasurementUnit interface2MeasurementUnit;
+
 	
 	public void setInterface2MeasurementUnit(Interface2MeasurementUnit in){
 		interface2MeasurementUnit = in;
 	}
+	
+	public void displayWaveLength () {
+		diagramtype = displayWaveLength;
+	};
+	
+	public void displayAllPixel () {
+		diagramtype = displayAllPxel;
+	};
 	
 	private int diagramPixel2PosX (int Pixel){
 		int PosX;
@@ -50,10 +60,10 @@ public class FrontendHelper {
 	
 	public int diagramPixelLambda2PosX(int Pixel, double Lambda){
 
-		if (diagramtype == 1){
+		if (diagramtype == displayWaveLength){
 			return lambda2PosX(Lambda);
 		}
-		if (diagramtype == 2){
+		if (diagramtype == displayAllPxel){
 			return Pixel2PosX(Pixel);
 		}
 		else
@@ -64,10 +74,10 @@ public class FrontendHelper {
 		
 	};
 	public double diagramPosX2Lambda(int PosX){
-		if (diagramtype == 1){
+		if (diagramtype == displayWaveLength){
 			return PosX2lambda(PosX);
 		}
-		if (diagramtype == 2){
+		if (diagramtype == displayAllPxel){
 			return PosX2lambda(PosX);
 		}
 		else
