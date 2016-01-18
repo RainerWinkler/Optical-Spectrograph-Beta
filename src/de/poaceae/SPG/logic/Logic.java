@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import de.poaceae.SPG.MeasurementUnit.FirstSpectrograph;
 import de.poaceae.SPG.MeasurementUnit.Interface2MeasurementUnit;
+import de.poaceae.SPG.basic.Main;
 import de.poaceae.SPG.com.ByteCollector;
 import de.poaceae.SPG.com.SendReceive;
 import de.poaceae.SPG.file.WriteFile;
@@ -57,7 +58,7 @@ public class Logic {
 		writeFile.open();
 
 	}
-
+	
 	public void activateFile(){
 		writeFile.activate();
 	}

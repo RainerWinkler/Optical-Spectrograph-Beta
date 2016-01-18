@@ -62,6 +62,10 @@ public class SendReceive implements Runnable {
 	public boolean is_send_possible = false;
 
 	ByteCollector byteCollector;
+	
+	public SendReceive(String newPortName){
+		portName = newPortName;
+	}
 
 	public void setStopMe(){
 		stopMe = true;

@@ -22,7 +22,7 @@ public class Main {
 
 
 
-	Runnable runnable;
+	private static Runnable runnable2;
 
 	/**
 	 * The main program
@@ -40,11 +40,23 @@ public class Main {
 		DataManager dataManager = new DataManager();
 		Logic logic = new Logic(dataManager);
 		
+		//start_thread_to_communicate(logic);
+
+		//((SendReceive) runnable).sendeSerialPort("H");  
+
+		// Start frontend
+		Frontend frontend = new Frontend();
+		frontend.startFrontend( logic, dataManager );
+		logic.setFrontend(frontend);
+
+	}
+
+	public static void start_thread_to_communicate(Logic logic, String newPortName) {
 		// New ByteCollector instance
 		ByteCollector byteCollector = new ByteCollector(logic);
 
 		// Start thread for communication
-		Runnable runnable = new SendReceive();
+		Runnable runnable = new SendReceive(newPortName);
 		( (SendReceive) runnable ).setByteCollector(byteCollector);
 
 		new Thread(runnable).start();
@@ -57,19 +69,14 @@ public class Main {
 		// Testnachricht
 		//while ((boolean) runnable).is_send_possible == false;
 
-		while (!((SendReceive) runnable ).is_send_possible );
-
-		//((SendReceive) runnable).sendeSerialPort("H");  
-
-		// Start frontend
-		Frontend frontend = new Frontend();
-		frontend.startFrontend( logic, dataManager );
-		logic.setFrontend(frontend);
-
+		//while (!((SendReceive) runnable ).is_send_possible );
+		
+		runnable2 = runnable;
+		
 	}
 
 	protected void finalize() throws Throwable{
-		((SendReceive) runnable ).setStopMe();
+		((SendReceive) runnable2 ).setStopMe();
 	}
 
 

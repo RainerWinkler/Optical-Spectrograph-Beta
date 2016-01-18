@@ -17,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import de.poaceae.SPG.basic.Main;
 import de.poaceae.SPG.logic.DataManager;
 import de.poaceae.SPG.logic.Logic;
 import java.awt.GridBagLayout;
@@ -70,6 +71,7 @@ public class Frontend {
 
 		}
 	}	
+	
 
 	public int getMousePosition(){
 		return myMousePosition;
@@ -148,6 +150,12 @@ public class Frontend {
 	private JRadioButton jRadioButtonMeasureDarkCurrent2 = null;
 
 	private JButton jButtonWriteFile = null;
+
+	private JButton jButtonStartThread = null;
+
+	private JLabel jLabelCOMPort = null;
+
+	private JTextField jTextFieldInputCOMPort = null;
 
 	private MyDrawPanel getMyDrawPanel(){
 		if (myDrawPanel == null){
@@ -383,6 +391,8 @@ public class Frontend {
 	 */
 	private JPanel getJInfoPanel() {
 		if (jInfoPanel == null) {
+			jLabelCOMPort = new JLabel();
+			jLabelCOMPort.setText("COM Port Selected");
 			jLabelPixelUnit = new JLabel();
 			jLabelPixelUnit.setText("pixel");
 			jLabelWellenlaengeUnit = new JLabel();
@@ -397,6 +407,9 @@ public class Frontend {
 			MousePosition.setText("    ");
 			jInfoPanel = new JPanel();
 			jInfoPanel.setLayout(flowLayout);
+			jInfoPanel.add(jLabelCOMPort, null);
+			jInfoPanel.add(getJTextFieldInputCOMPort(), null);
+			jInfoPanel.add(getJButtonStartThread(), null);
 			jInfoPanel.add(getGetNewData(), null);
 			jInfoPanel.add(MousePosition, null);
 			jInfoPanel.add(jLabelPixelUnit, null);
@@ -878,6 +891,37 @@ private JButton getJButtonWriteFile() {
 		});
 	}
 	return jButtonWriteFile;
+}
+
+/**
+ * This method initializes jButtonStartThread	
+ * 	
+ * @return javax.swing.JButton	
+ */
+private JButton getJButtonStartThread() {
+	if (jButtonStartThread == null) {
+		jButtonStartThread = new JButton();
+		jButtonStartThread.setText("Start Thread to communicate to device");
+		jButtonStartThread.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				Main.start_thread_to_communicate(logic, jTextFieldInputCOMPort.getText());
+			}
+		});
+	}
+	return jButtonStartThread;
+}
+
+/**
+ * This method initializes jTextFieldInputCOMPort	
+ * 	
+ * @return javax.swing.JTextField	
+ */
+private JTextField getJTextFieldInputCOMPort() {
+	if (jTextFieldInputCOMPort == null) {
+		jTextFieldInputCOMPort = new JTextField("COM1",6);
+		
+	}
+	return jTextFieldInputCOMPort;
 }
 
 
