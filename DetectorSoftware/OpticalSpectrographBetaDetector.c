@@ -6,36 +6,36 @@
  */ 
 
 
-// Spectrograph Alpha
+// Spectrograph Beta
 
 // Version 0.1
 // Rainer Winkler
 // 15.02.2011 21:30
-// Messung startet wenn irgendein Zeichen über die serielle Schnittstelle empfangen wird
-// Jetzt Ende mit fünf 0XFF in Folge und anschließend ein T
-// Die mit T angeforderten Daten werden jetzt in der Klasse RawData im Java-Programm abgelegt.
+// Measurement starts if any character is received about the serial interface
+// Now finish with five 0XFF in succession and a final T
+// The with T requested data are not stored in class RawData in the Java program.
 // Hardware
 
-// Linear CCD Typ Sony ILX554B
+// Linear CCD type Sony ILX554B
 
-// ThetaCLK an PD4 (Ausgang benötigt)
-// SHW an PD3 (Ausgang benötigt)
-// ThetaROG an PD2 (Ausgang benötigt)
-// Trigger für Oszilloskop an PB0
+// ThetaCLK on PD4 (output requiredt)
+// SHW on PD3 (output required)
+// ThetaROG on PD2 (output required)
+// Trigger for oscilloscope on an PB0
 
-// Extermer Oszillator mit 16 MHz
+// external oscillator with 16 MHz
 
 // Rainer Winkler
 // 04.12.2011 21:56
-// Nachdem mit I und sechs Ziffern die Integrationszeit gesendet wurde wird jetzt unmittelbar gemessen
-//
+// After with I and six digits the integration time is send, measurement starts immediately
+
 
 #include <avr/io.h>
 #include <stdlib.h>
 
 
 // -----------------------------------------------------------------
-// Vereinbarungen
+// Definitions
 // -----------------------------------------------------------------
 
 // delay.h has a different logic after avr-libc 1.6 This causes the old logic to be used:
@@ -63,17 +63,15 @@
 #define NULL 0x00;
 
 // -----------------------------------------------------------------
-// Vereinbarungen zum Warten (Aus mikrocontroller.net: 
+// Declarations for wait (From mikrocontroller.net: 
 // http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial#Warteschleifen_.28delay.h.29)
 // -----------------------------------------------------------------
 
 #ifndef F_CPU
-/* Definiere F_CPU, wenn F_CPU nicht bereits vorher definiert 
-   (z.&nbsp;B. durch Übergabe als Parameter zum Compiler innerhalb 
-   des Makefiles). Zusätzlich Ausgabe einer Warnung, die auf die
-   "nachträgliche" Definition hinweist */
-#warning "F_CPU war noch nicht definiert, wird nun mit 3686400 definiert"
-#define F_CPU 16000000UL     /* Quarz mit 16.0 Mhz */
+/* Define F_CPU, íf F_CPU is not alread defined
+   (for instance by returning as parameter to the compiler inside the make file). Raise a warning the that informs about the late definition */
+#warning "F_CPU not yet defined, will now be defined with 3686400"
+#define F_CPU 16000000UL     /* Quartz with 16.0 Mhz */
 #endif
 #include <util/delay.h>
 
@@ -83,15 +81,15 @@
 
 void putch (unsigned char x)
 	{
-	while (!(UCSRA & (1<<UDRE)))  /* warten bis Senden moeglich                   */
+	while (!(UCSRA & (1<<UDRE)))  /* wait until send is possible                   */
 		{
 		}
-	UDR = x;                    /* schreibt das Zeichen x auf die Schnittstelle */
+	UDR = x;                    /* write the character x to the serial interface */
 	}
 
 void putstring(unsigned char *zeiger)
 	{
-	while(*zeiger != 0) putch(*zeiger++); // solange keine Endemarke 0
+	while(*zeiger != 0) putch(*zeiger++); // as long as there is no end mark 0
 	}
 
 
@@ -131,21 +129,21 @@ void empty_ccd_array( void )
 	internal_count = 0;
 while ( internal_count++ < 2087 )
 		{
-		// Soll für 250ns Bit nicht setzen, macht 4 CPU Zyklen oder 2 Befehle, da jeder 2 CPS Zyklen benötigt
-		// da die while Schleife 7 CPU Zyklen benötigt ist das Minimum aber 9 CPU Zyklen
+		// shall for 250ns do not set bit, makes 4 CPU cycles or 2 statements, because each requires 2 CPS cycles
+		// because the while loop requires 7 CPU cycles,. the minimum is 9 CPU cycles
 		UNSETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 		UNSETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 		UNSETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 		UNSETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);	
 	
-		// Soll für 250s Bit setzen, macht 4 CPU Zyklen oder 2 Befehle,
-		// da die while Schleife 7 CPU Zyklen benötigt ist das Minimum aber 9 CPU Zyklen
+		// shall for 250ns do not set bit, makes 4 CPU cycles or 2 statements,
+		// because the while loop requires 7 CPU cycles,. the minimum is 9 CPU cycles
 		SETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 		}
 	}
 
 // -----------------------------------------------------------------
-// Set Hardwareparameters
+// Set hardware parameters
 // -----------------------------------------------------------------
 
 
@@ -153,7 +151,7 @@ while ( internal_count++ < 2087 )
 void main(void)
 {
 
-// Set Datadirektions
+// Set data directions
 SETBIT( THETA_CLK_DDR_PORT, THETA_CLK_BYTE);
 
 SETBIT( SHW_DDR_PORT, SHW_BYTE); 
@@ -162,28 +160,28 @@ SETBIT( THETA_ROG_DDR_PORT, THETA_ROG_BYTE);
 
 SETBIT( TRIGGER_DDR_PORT , TRIGGER_BYTE); 
 
-// Set parameters "Serielle Schnittstelle"
+// Set parameters "Serial Interface"
 
- UCSRB |= (1 << TXEN); // Sender ein
- UCSRB |= (1 << RXEN); // Empfänger ein
+ UCSRB |= (1 << TXEN); // Sender on
+ UCSRB |= (1 << RXEN); //Receiver on
  
- UCSRC |= (1 << URSEL) | (1 << UCSZ1) | (1 << UCSZ0); // 8 Datenbits und einschalten
+ UCSRC |= (1 << URSEL) | (1 << UCSZ1) | (1 << UCSZ0); // 8 data bits and switch on
  UBRRH = 0;
 
  //UCSRA |= (1 << U2X);
- //UBRRL = 207; // 9600 Baud bei 16 MHz U2X = 1 (OK)
+ //UBRRL = 207; // 9600 Baud at 16 MHz U2X = 1 (OK)
 
  //UCSRA |= (1 << U2X);
- //UBRRL = 103; //19200 Baud bei 16 MHz U2X = 1  (OK)
+ //UBRRL = 103; //19200 Baud at 16 MHz U2X = 1  (OK)
 
  //UCSRA |= (1 << U2X);
- //UBRRL = 51; //38400 Baud bei 16 MHz U2X = 1  (OK)
+ //UBRRL = 51; //38400 Baud at 16 MHz U2X = 1  (OK)
 
  UCSRA |= (1 << U2X);
- UBRRL = 34; //57600 Baud bei 16 MHz U2X = 1 (OK)
+ UBRRL = 34; //57600 Baud at 16 MHz U2X = 1 (OK)
 
  //UCSRA |= (1 << U2X);
- //UBRRL = 16; //115200 Baud bei 16 MHz U2X = 1 (OK)
+ //UBRRL = 16; //115200 Baud at 16 MHz U2X = 1 (OK)
 
  // Set Parameters Analog Digital Converter
 
@@ -192,7 +190,7 @@ SETBIT( TRIGGER_DDR_PORT , TRIGGER_BYTE);
 
 
 // -----------------------------------------------------------------
-// Deklarations
+// Declarations
 // -----------------------------------------------------------------
 
 unsigned int count;
@@ -221,7 +219,7 @@ SETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 
 SETBIT( THETA_ROG_PORT, THETA_ROG_BYTE); 
 
-// Am Anfang Array leeren
+// empty array at start
 
 empty_ccd_array( );
 empty_ccd_array( );
@@ -235,18 +233,18 @@ empty_ccd_array( );
 while(1)
 	{
 
-	// Für Test, Trigger zurücksetzen:
+	// For test, reset trigger:
 	UNSETBIT( TRIGGER_PORT , TRIGGER_BYTE); 
 
-	// Warte bis irgendein Zeichen empfangen wird, erst dann wird ausgewertet
+	// Wait until any character is received, only then analysis will be done
 	while ( ! (UCSRA & (1 << RXC)));
 	zeichen_ein = UDR;
 
 	if (zeichen_ein == 0x49) //I
 		{
-		// Übermittle Integrationszeit in ms für die Belichtung
-		// Die nächsten 6 Zeichen werden als Integrationszeit in ms interpretiert
-		// Die Zeit ist mit führenden Nullen zu übergeben
+		// Transfer integration time in ms for exposure
+		// The next 6 characters are interpretated as integration time in ms. 
+		// The time is to be transfered with leading zeros
 		while ( ! (UCSRA & (1 << RXC)));
 		s[0] = UDR;
 		while ( ! (UCSRA & (1 << RXC)));
@@ -260,32 +258,31 @@ while(1)
 		while ( ! (UCSRA & (1 << RXC)));
 		s[5] = UDR;
 		s[6] = 0;
-		putstring( s ); // Gebe Integrationszeit zurück
+		putstring( s ); // Return integration time
 		putch( cr );
 		putch( lf );
 		integrationTimeIn_ms = strtol( s , conversionError , 10 );
 
-		putch('I'); // Quittiere Empfang mit I
-		ltoa( integrationTimeIn_ms, s, 10 ); // 10 fuer radix -> Dezimalsystem
+		putch('I'); // Give feedback with I
+		ltoa( integrationTimeIn_ms, s, 10 ); // 10 for radix -> decimal system
 		putch( cr );
 		putch( lf );
-		putstring( s ); // Gebe Integrationszeit zurück
+		putstring( s ); // Return integration time
 		putch( cr );
 		putch( lf );
-		putstring( conversionError ); // Gebe Integrationszeit zurück
+		putstring( conversionError ); // Return integration time
 		putch( cr );
 		putch( lf );
 
-		putch('E'); // Melde Ende mit E
+		putch('E'); // Inform about end with E
 
 		}
 
 	else if (zeichen_ein == 0x4A) //J
 		{
-
-		// Übermittle Integrationszeit in ms für die Belichtung
-		// Die nächsten 6 Zeichen werden als Integrationszeit in ms interpretiert
-		// Die Zeit ist mit führenden Nullen zu übergeben
+		// Transfer integration time in ms for exposure
+		// The next 6 characters are interpretated as integration time in ms.
+		// The time is to be transfered with leading zeros
 		while ( ! (UCSRA & (1 << RXC)));
 		s[0] = UDR;
 		while ( ! (UCSRA & (1 << RXC)));
@@ -299,28 +296,28 @@ while(1)
 		while ( ! (UCSRA & (1 << RXC)));
 		s[5] = UDR;
 		s[6] = 0;
-		putstring( s ); // Gebe Integrationszeit zurück
+		putstring( s ); // Return integration time
 
 		integrationTimeIn_ms = strtol( s , conversionError , 10 );
 
-		// Verkürzte Übergabe der Daten für das Java Programm
-		// Angefordert mit T
-		// Rückgabe: 
-		// 6. Ein Zeichen T wird zurückgegeben
-		// 7. Zeichen ist Null
-		// 8. Zeichen ist das LowByte des ersten Datenpunktes
-		// 9. Zeichen ist das HighByte des ersten Datenpunktes
+		// Shorted transfer of data for the java programm
+		// Required with T
+		// Returned is: 
+		// 6. A character T is given back
+		// 7. character is zero
+		// 8. character is low byte of first datapoint
+		// 9. character is high byte of first datapoint
 		// ...
-		// Eine Null
-		// Fünfmal 0xFF
-		// Das letzte Zeichen ist T
+		// A zero
+		// five times 0xFF
+		// The last character is T
 		unsigned char lowByteADC = 0;
 		unsigned char highByteADC = 0;
 
-		// Für Test, Empfang des Zeichens mitteilen indem Trigger gesetzt wird:
+		// For test, inform about receiving a character by setting trigger:
 		SETBIT( TRIGGER_PORT , TRIGGER_BYTE); 
 
-		// Jetzt Ladung entleeren, Array leeren Strahlung integrieren und Ladung erneut entleeren
+		// Now remove charge, empty array, integrate light and remove charge again.
 		release_charge_of_ccd ( );
 		empty_ccd_array( );
 		//_delay_ms(1000);
@@ -350,9 +347,9 @@ while(1)
 			{
 			UNSETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 
-			// Starte ADC Wandlung (Dummy, damit Periodenlängen gleich sind
+			// start ACD conversion (Dummy, so that period length are equal)
 			ADCSR |= (1 << ADSC);
-			while(ADCSRA & (1 << ADSC)); //Warte auf Ende der Wandlung
+			while(ADCSRA & (1 << ADSC)); //Wait for end of conversion
 			//adcvalue = (unsigned int) ADCL + ((unsigned int) ADCH << 8 );
 
 			putch( highByteADC );
@@ -360,9 +357,9 @@ while(1)
 
 			SETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 
-			// Starte ADC Wandlung
+			// Start ADC conversion
 			ADCSR |= (1 << ADSC);
-			while(ADCSRA & (1 << ADSC)); //Warte auf Ende der Wandlung
+			while(ADCSRA & (1 << ADSC)); //Wait for end of conversion
 			//adcvalue = (unsigned int) ADCL + ( ( (unsigned int) ADCH ) << 8 );
 			lowByteADC = (unsigned char) ADCL;
 			highByteADC = (unsigned char) ADCH;
@@ -381,15 +378,15 @@ while(1)
 		putch( 0xFF );
 
 
-		} // Ende J
+		} // Final J
 	else
 		{
 
 
-		// Für Test, Empfang des Zeichens mitteilen indem Trigger gesetzt wird:
+		// For test, inform about receiving a character by setting trigger:
 		SETBIT( TRIGGER_PORT , TRIGGER_BYTE); 
 
-		// Jetzt Ladung entleeren, Array leeren Strahlung integrieren und Ladung erneut entleeren
+		// Now remove charge, empty array, integrate light and remove charge again.
 		release_charge_of_ccd ( );
 		empty_ccd_array( );
 		//_delay_ms(1000);
@@ -425,9 +422,9 @@ while(1)
 
 
 
-			// Starte ADC Wandlung (Dummy, damit Periodenlängen gleich sind
+			// start ACD conversion (Dummy, so that period length are equal)
 			ADCSR |= (1 << ADSC);
-			while(ADCSRA & (1 << ADSC)); //Warte auf Ende der Wandlung
+			while(ADCSRA & (1 << ADSC)); //Wait for end of conversion
 			adcvalue = (unsigned int) ADCL + ((unsigned int) ADCH << 8 );
 
 
@@ -438,23 +435,23 @@ while(1)
 
 
 			putstring( s );
-			// Messe Anfang der ersten Hälfte
+			// measure start of first half
 			SETBIT( TRIGGER_PORT , TRIGGER_BYTE); 
 			putch(';');
 
-			// Messe Ende der ersten Hälfte
+			// measure end of first half 
 			UNSETBIT( TRIGGER_PORT , TRIGGER_BYTE); 
 
 
 			SETBIT( THETA_CLK_PORT, THETA_CLK_BYTE);
 
-			// Starte ADC Wandlung
+			// Start ADC conversion
 			ADCSR |= (1 << ADSC);
-			while(ADCSRA & (1 << ADSC)); //Warte auf Ende der Wandlung
+			while(ADCSRA & (1 << ADSC)); //Wait for end of conversion
 			//adcvalue = (unsigned int) ADCL;
 			adcvalue = (unsigned int) ADCL + ( ( (unsigned int) ADCH ) << 8 );
 
-			utoa( adcvalue, s , 10 ); // 10 fuer radix -> Dezimalsystem
+			utoa( adcvalue, s , 10 ); // 10 for radix -> Dezimalsystem
 			putstring( s );
 			putch( cr );
 			putch( lf );
