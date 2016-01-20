@@ -552,6 +552,9 @@ public class Frontend {
 	 */
 	private JRadioButton getJDarkCurrentMeasureRadioButton() {
 		if (jDarkCurrentMeasureRadioButton == null) {
+			// This is the default button
+			// In DataManager.java therefore 
+			// private int measureSet = setMeasureDark; is written for proper initialization
 			jDarkCurrentMeasureRadioButton = new JRadioButton("Measure Dark Current",true);
 			jDarkCurrentMeasureRadioButton
 			.addActionListener(new java.awt.event.ActionListener() {

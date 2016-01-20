@@ -27,7 +27,10 @@ public class DataManager {
 
 	private boolean measurementStarted = false;
 
-	private int measureSet;
+	// This is the default button
+	// Initialize also the value with this set
+	// Adapt if default button changes
+	private int measureSet = setMeasureDark;
 	private int displaySet;
 
 	private RawData myLastRawData;
