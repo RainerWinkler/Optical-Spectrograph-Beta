@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "OpticalSpectrographBetaDetector", "OpticalSpectrographBetaDetector.cproj", "{0BA433D8-C964-445D-9A8B-7503C0809496}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BA433D8-C964-445D-9A8B-7503C0809496}.Debug|AVR.ActiveCfg = Debug|AVR
+		{0BA433D8-C964-445D-9A8B-7503C0809496}.Debug|AVR.Build.0 = Debug|AVR
+		{0BA433D8-C964-445D-9A8B-7503C0809496}.Release|AVR.ActiveCfg = Release|AVR
+		{0BA433D8-C964-445D-9A8B-7503C0809496}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
