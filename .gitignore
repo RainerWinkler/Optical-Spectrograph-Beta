@@ -95,3 +95,9 @@ hs_err_pid*
 # Debug files
 *.dSYM/
 
+# Project specific -------------------------------------------------
+
+# Do not upload the csv files stored by the frontend
+*.csv
+# Opened in openOffice
+*.csv#

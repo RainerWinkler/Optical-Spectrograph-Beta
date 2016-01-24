@@ -21,14 +21,15 @@ public class WriteFile {
 		active = true;
 	}
 	
-	public void open(){
+	public String open(){
+		String message = "";
 		if (active == false){
-			return;
+			return message;
 		}
 		String filename;
 		filename = "SLOG_" + String.valueOf(count++) + ".csv";
 		file = new File(filename);
-
+		message = "File " + filename + " is written";
 		//if file doesnt exists, then create it
 		if(!file.exists()){
 			try{
@@ -39,8 +40,10 @@ public class WriteFile {
 			catch(IOException e){
 				e.printStackTrace();
 				System.out.println("Error");	
+				message = "File not written due to error";
 			}
 		}
+		return message;
 	}
 	
 	public void close(){

@@ -157,6 +157,14 @@ public class Frontend {
 
 	private JTextField jTextFieldInputCOMPort = null;
 
+	private JPanel jPanel = null;
+
+	private JPanel jPanel1 = null;
+
+	private JPanel jPanelMessage = null;
+
+	private JLabel jLabelMessage = null;
+
 	private MyDrawPanel getMyDrawPanel(){
 		if (myDrawPanel == null){
 			myDrawPanel = new MyDrawPanel();
@@ -450,6 +458,7 @@ public class Frontend {
 			flowLayout1.setAlignment(java.awt.FlowLayout.CENTER);
 			jSettingsPanel = new JPanel();
 			jSettingsPanel.setLayout(flowLayout1);
+			jSettingsPanel.add(getJPanel(), null);
 			jSettingsPanel.add(getJButtonsMeasureTypePanel(), null);
 			jSettingsPanel.add(getJSettingsSensitivyMeasurementsPanel(), null);
 			jSettingsPanel.add(getJActionsPanel(), null);
@@ -476,10 +485,17 @@ public class Frontend {
 			gridBagConstraints5.ipady = 0;
 			gridBagConstraints5.gridheight = 1;
 			gridBagConstraints5.gridy = 0;
+			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+			gridBagConstraints7.gridx = 0;
+			gridBagConstraints7.ipadx = 502;
+			gridBagConstraints7.ipady = 0;
+			gridBagConstraints7.gridheight = 1;
+			gridBagConstraints7.gridy = 2;			
 			jTopPanel = new JPanel();
 			jTopPanel.setLayout(new GridBagLayout());
 			jTopPanel.add(getJInfoPanel(), gridBagConstraints5);
 			jTopPanel.add(getJSettingsPanel(), gridBagConstraints6);
+			jTopPanel.add(getJPanelMessage2(), gridBagConstraints7);
 		}
 		return jTopPanel;
 	}
@@ -927,6 +943,64 @@ private JTextField getJTextFieldInputCOMPort() {
 	return jTextFieldInputCOMPort;
 }
 
+/**
+ * This method initializes jPanelMessage	
+ * 	
+ * @return javax.swing.JPanel	
+ */
+private JPanel getJPanelMessage() {
+	if (jPanelMessage == null) {
+		GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+		gridBagConstraints7.gridx = -1;
+		gridBagConstraints7.gridy = -1;
+	}
+	return jPanelMessage;
+}
 
+/**
+ * This method initializes jPanel	
+ * 	
+ * @return javax.swing.JPanel	
+ */
+private JPanel getJPanel() {
+	if (jPanel == null) {
+		jPanel = new JPanel();
+		jPanel.setLayout(new GridBagLayout());
+	}
+	return jPanel;
+}
+
+/**
+ * This method initializes jPanel1	
+ * 	
+ * @return javax.swing.JPanel	
+ */
+private JPanel getJPanel1() {
+	if (jPanel1 == null) {
+		jPanel1 = new JPanel();
+		jPanel1.setLayout(new GridBagLayout());
+	}
+	return jPanel1;
+}
+
+/**
+ * This method initializes jPanelMessage	
+ * 	
+ * @return javax.swing.JPanel	
+ */
+private JPanel getJPanelMessage2() {
+	if (jPanelMessage == null) {
+		jLabelMessage = new JLabel();
+		jLabelMessage.setText("");
+		jPanelMessage = new JPanel();
+		jPanelMessage.setLayout(new FlowLayout());
+		jPanelMessage.add(jLabelMessage, null);
+	}
+	return jPanelMessage;
+}
+
+public void setMessage(String message){
+	jLabelMessage.setText(message);
+}
 
 }

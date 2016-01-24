@@ -55,7 +55,9 @@ public class Logic {
 		collectedData.initialize();
 
 		writeFile = new WriteFile();
-		writeFile.open();
+		String message = writeFile.open();
+		if (!message.equals(""))
+		  {frontend.setMessage(message);};
 
 	}
 	
@@ -201,7 +203,10 @@ public class Logic {
 
 	public void drawToMainPanel(Graphics2D g2d){
 
-		writeFile.open();
+		String message = writeFile.open();
+		if (!message.equals(""))
+		  {frontend.setMessage(message);};
+		  
 
 		// Test File Output
 		//WriteFile writeFile;
